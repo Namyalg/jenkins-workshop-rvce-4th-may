@@ -44,9 +44,9 @@ sudo wget -O /etc/apt/keyrings/jenkins-keyring.asc https://pkg.jenkins.io/debian
 # Add Jenkins repository
 echo "deb [signed-by=/etc/apt/keyrings/jenkins-keyring.asc] https://pkg.jenkins.io/debian-stable binary/" | sudo tee /etc/apt/sources.list.d/jenkins.list > /dev/null
 
-# Update and install Jenkins 2.479.3 (compatible with Java 17/21)
+# Update and install Jenkins 2.504.1 (compatible with Java 21)
 sudo apt-get update
-sudo apt-get install jenkins=2.479.3 -y
+sudo apt-get install jenkins=2.504.1 -y
 
 echo "========================================"
 echo "Step 4: Install Git"
@@ -75,7 +75,18 @@ sudo sh -c 'echo "jenkins ALL=(ALL) NOPASSWD: /usr/bin/cp, /usr/bin/chown, /usr/
 sudo chmod 440 /etc/sudoers.d/jenkins
 
 echo "========================================"
-echo "Step 7: Start Jenkins"
+echo "Step 7: Add Swap Space (for e2-micro)"
+echo "========================================"
+# e2-micro has only 1GB RAM, add swap to prevent memory issues
+sudo fallocate -l 1G /swapfile
+sudo chmod 600 /swapfile
+sudo mkswap /swapfile
+sudo swapon /swapfile
+echo "Swap enabled:"
+free -m
+
+echo "========================================"
+echo "Step 8: Start Jenkins"
 echo "========================================"
 
 sudo systemctl start jenkins
