@@ -41,17 +41,29 @@ git checkout -b feature/alice
 
 ### Step 3: Edit the Website
 
-Open `index.html` and find this line:
+Open `index.html` and make two changes:
 
+**Change 1:** Find the title line:
 ```html
-<div class="name">Namya</div>
+<title>Jenkins Workshop - RVCE</title>
+```
+
+Change it to include your name:
+```html
+<title>Alice - Jenkins Workshop</title>
+```
+
+**Change 2:** Find the name div:
+```html
+<div class="name">Your Name Here</div>
 ```
 
 Change it to your name:
-
 ```html
 <div class="name">Alice</div>
 ```
+
+**Important:** The tests will fail if you don't make both changes!
 
 ### Step 4: Commit Your Changes
 
@@ -119,8 +131,10 @@ Your page is now live!
 |-------|--------------|
 | **Clone** | Jenkins downloads your code from GitHub |
 | **Build** | Prepares the application |
-| **Test** | Checks if index.html exists |
+| **Test** | Validates your changes (name and title updated) |
 | **Deploy** | Copies files to the web server |
+
+**If tests fail, deployment is blocked!** This is the power of CI/CD - bad code never reaches production.
 
 ---
 
@@ -134,6 +148,11 @@ Your page is now live!
 ---
 
 ## Troubleshooting
+
+**Tests failed?**
+- Did you change your name in index.html?
+- Did you change the title in index.html?
+- Check Console Output to see which test failed
 
 **Build failed?**
 - Check the Console Output in Jenkins for error messages
