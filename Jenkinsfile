@@ -34,15 +34,7 @@ pipeline {
                 echo "STAGE: TEST"
                 echo "========================================"
                 echo "Running tests..."
-                sh '''
-                    if [ -f index.html ]; then
-                        echo "✓ index.html exists - PASSED"
-                    else
-                        echo "✗ index.html not found - FAILED"
-                        exit 1
-                    fi
-                '''
-                echo "All tests passed!"
+                sh 'chmod +x tests.sh && ./tests.sh'
             }
         }
 
