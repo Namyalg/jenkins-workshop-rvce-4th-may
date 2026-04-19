@@ -53,7 +53,7 @@ pipeline {
                     sudo chown www-data:www-data /var/www/html/index.html
                 '''
                 echo "Deployment successful!"
-                echo "Site is live at: http://136.116.153.66/"
+                echo "Site is live at: http://104.197.51.120/"
             }
         }
     }
