@@ -73,7 +73,7 @@ git push origin feature/alice
 
 ### Step 6: Watch Jenkins Build
 
-1. Go to Jenkins: `http://<IP-ADDRESS>:8080/job/workshop-pipeline/`
+1. Go to Jenkins: `http://104.197.51.120:8080/job/workshop-pipeline/`
 2. Find your branch in the list
 3. Click on it to see the build progress
 4. Watch the pipeline stages: Clone → Build → Test → Deploy
@@ -83,12 +83,12 @@ git push origin feature/alice
 Once the build succeeds, visit:
 
 ```
-http://<IP-ADDRESS>/feature/your-name/
+http://104.197.51.120/feature/your-name/
 ```
 
 Example:
 ```
-http://<IP-ADDRESS>/feature/alice/
+http://104.197.51.120/feature/alice/
 ```
 
 You should see your name displayed on the page!
