@@ -4,6 +4,9 @@ pipeline {
     stages {
         stage('Clone') {
             steps {
+                echo "========================================"
+                echo "STAGE: CLONE"
+                echo "========================================"
                 echo "Cloning repository..."
                 echo "Branch: ${env.GIT_BRANCH ?: 'master'}"
                 echo "Commit: ${env.GIT_COMMIT ?: 'N/A'}"
@@ -12,6 +15,9 @@ pipeline {
 
         stage('Build') {
             steps {
+                echo "========================================"
+                echo "STAGE: BUILD"
+                echo "========================================"
                 echo "Building the application..."
                 sh 'ls -la'
                 echo "Build completed successfully!"
@@ -20,12 +26,15 @@ pipeline {
 
         stage('Test') {
             steps {
+                echo "========================================"
+                echo "STAGE: TEST"
+                echo "========================================"
                 echo "Running tests..."
                 sh '''
                     if [ -f index.html ]; then
-                        echo "index.html exists - PASSED"
+                        echo "✓ index.html exists - PASSED"
                     else
-                        echo "index.html not found - FAILED"
+                        echo "✗ index.html not found - FAILED"
                         exit 1
                     fi
                 '''
@@ -35,21 +44,32 @@ pipeline {
 
         stage('Deploy') {
             steps {
-                echo "Deploying application..."
+                echo "========================================"
+                echo "STAGE: DEPLOY"
+                echo "========================================"
+                echo "Deploying to nginx..."
+                sh '''
+                    sudo cp index.html /var/www/html/
+                    sudo chown www-data:www-data /var/www/html/index.html
+                '''
                 echo "Deployment successful!"
-                echo "================================================"
-                echo "Pipeline completed for branch: ${env.GIT_BRANCH ?: 'master'}"
-                echo "================================================"
+                echo "Site is live at: http://136.116.153.66/"
             }
         }
     }
 
     post {
         success {
-            echo 'Pipeline succeeded!'
+            echo "========================================"
+            echo "PIPELINE SUCCEEDED!"
+            echo "Your site is now live."
+            echo "========================================"
         }
         failure {
-            echo 'Pipeline failed!'
+            echo "========================================"
+            echo "PIPELINE FAILED!"
+            echo "Check the logs above for errors."
+            echo "========================================"
         }
     }
 }
