@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+    environment {
+        BRANCH_NAME = "${env.GIT_BRANCH?.replaceAll('origin/', '') ?: 'master'}"
+    }
+
     stages {
         stage('Clone') {
             steps {
@@ -8,7 +12,7 @@ pipeline {
                 echo "STAGE: CLONE"
                 echo "========================================"
                 echo "Cloning repository..."
-                echo "Branch: ${env.GIT_BRANCH ?: 'master'}"
+                echo "Branch: ${BRANCH_NAME}"
                 echo "Commit: ${env.GIT_COMMIT ?: 'N/A'}"
             }
         }
@@ -47,13 +51,21 @@ pipeline {
                 echo "========================================"
                 echo "STAGE: DEPLOY"
                 echo "========================================"
-                echo "Deploying to nginx..."
-                sh '''
-                    sudo cp index.html /var/www/html/
-                    sudo chown www-data:www-data /var/www/html/index.html
-                '''
+                echo "Deploying branch: ${BRANCH_NAME}"
+                sh """
+                    # Create directory for this branch
+                    sudo mkdir -p /var/www/html/${BRANCH_NAME}
+
+                    # Copy files to branch directory
+                    sudo cp index.html /var/www/html/${BRANCH_NAME}/
+
+                    # Set permissions
+                    sudo chown -R www-data:www-data /var/www/html/${BRANCH_NAME}
+                """
                 echo "Deployment successful!"
-                echo "Site is live at: http://104.197.51.120/"
+                echo "========================================"
+                echo "Site is live at: http://104.197.51.120/${BRANCH_NAME}/"
+                echo "========================================"
             }
         }
     }
@@ -62,7 +74,7 @@ pipeline {
         success {
             echo "========================================"
             echo "PIPELINE SUCCEEDED!"
-            echo "Your site is now live."
+            echo "Your site is now live at: http://104.197.51.120/${BRANCH_NAME}/"
             echo "========================================"
         }
         failure {
