@@ -48,8 +48,14 @@ pipeline {
                     # Create directory for this branch
                     sudo mkdir -p /var/www/html/${BRANCH_NAME}
 
+                    # Generate timestamp
+                    TIMESTAMP=\$(date '+%Y-%m-%d %H:%M:%S')
+
+                    # Create index.html with timestamp injected
+                    sed "s/TIMESTAMP_PLACEHOLDER/\$TIMESTAMP/" index.html > index_deploy.html
+
                     # Copy files to branch directory
-                    sudo cp index.html /var/www/html/${BRANCH_NAME}/
+                    sudo cp index_deploy.html /var/www/html/${BRANCH_NAME}/index.html
 
                     # Set permissions
                     sudo chown -R www-data:www-data /var/www/html/${BRANCH_NAME}
