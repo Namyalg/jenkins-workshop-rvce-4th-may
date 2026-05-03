@@ -48,7 +48,7 @@ pipeline {
                 echo "========================================"
                 echo "Deploying branch: ${BRANCH_NAME}"
                 script {
-                    def timestamp = sh(script: 'date "+%Y-%m-%d %H:%M:%S"', returnStdout: true).trim()
+                    def timestamp = sh(script: 'TZ="Asia/Kolkata" date "+%Y-%m-%d %H:%M:%S IST"', returnStdout: true).trim()
                     echo "Adding current timestamp: ${timestamp}"
 
                     sh """
