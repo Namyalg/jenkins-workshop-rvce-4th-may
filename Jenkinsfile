@@ -47,22 +47,21 @@ pipeline {
                 echo "STAGE: DEPLOY"
                 echo "========================================"
                 echo "Deploying branch: ${BRANCH_NAME}"
-                sh """
-                    # Create directory for this branch
-                    sudo mkdir -p /var/www/html/${BRANCH_NAME}
+                script {
+                    def timestamp = sh(script: 'date "+%Y-%m-%d %H:%M:%S"', returnStdout: true).trim()
+                    echo "Adding current timestamp: ${timestamp}"
 
-                    # Generate timestamp
-                    TIMESTAMP=\$(date '+%Y-%m-%d %H:%M:%S')
+                    sh """
+                        # Create directory for this branch
+                        sudo mkdir -p /var/www/html/${BRANCH_NAME}
 
-                    # Create index.html with timestamp injected
-                    sed "s/TIMESTAMP_PLACEHOLDER/\$TIMESTAMP/" index.html > index_deploy.html
+                        # Inject timestamp and copy to deploy location
+                        sed 's/TIMESTAMP_PLACEHOLDER/${timestamp}/' index.html | sudo tee /var/www/html/${BRANCH_NAME}/index.html > /dev/null
 
-                    # Copy files to branch directory
-                    sudo cp index_deploy.html /var/www/html/${BRANCH_NAME}/index.html
-
-                    # Set permissions
-                    sudo chown -R www-data:www-data /var/www/html/${BRANCH_NAME}
-                """
+                        # Set permissions
+                        sudo chown -R www-data:www-data /var/www/html/${BRANCH_NAME}
+                    """
+                }
                 echo "Deployment successful!"
                 echo "========================================"
                 echo "Site is live at: http://104.197.51.120/${BRANCH_NAME}/"
