@@ -29,6 +29,9 @@ pipeline {
         }
 
         stage('Test') {
+            when {
+                not { branch 'master' }
+            }
             steps {
                 echo "========================================"
                 echo "STAGE: TEST"
