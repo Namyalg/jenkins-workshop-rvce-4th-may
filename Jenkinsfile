@@ -4,7 +4,7 @@ pipeline {
     environment {
         // Jenkins automatically provides env.GIT_BRANCH (e.g., "origin/feature/alice")
         // Strip "origin/" prefix to get clean branch name for deployment paths
-        BRANCH_NAME = "${env.GIT_BRANCH?.replaceAll('origin/', '') ?: 'master'}"
+        BRANCH_NAME = "${env.GIT_BRANCH?.replaceAll('origin/', '') ?: 'feature/manoj'}"
     }
 
     stages {
